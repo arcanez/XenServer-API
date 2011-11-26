@@ -12,16 +12,15 @@ has guests => (
 sub _build_guests {
   my $self = shift;
   my @return;
-  my $results = $self->get('VM.get_all');
+  my $results = $self->get('VM.get_all_records');
   return [] unless $results->{Status} eq 'Success';
-  for my $uuid (@{$results->{Value}}) {
-    my $vm = $self->get('VM.get_record', $uuid);
-    next unless $vm->{Status} eq 'Success';
-    next if $vm->{Value}{is_a_template};
-    next if $vm->{Value}{is_a_snapshot};
-    next if $vm->{Value}{is_control_domain};
-    delete $vm->{Value}{last_booted_record};
-    push @return, XenServer::API::Guest->new($vm->{Value});
+  for my $key (keys %{$results->{Value}}) {
+    my $vm = $results->{Value}{$key};
+    next if $vm->{is_a_template};
+    next if $vm->{is_a_snapshot};
+    next if $vm->{is_control_domain};
+    delete $vm->{last_booted_record};
+    push @return, XenServer::API::Guest->new($vm);
   }
   return \@return;
 }
