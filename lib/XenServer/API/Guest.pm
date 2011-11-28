@@ -1,7 +1,6 @@
 package XenServer::API::Guest;
-use Moo;
-use Scalar::Util qw(looks_like_number);
-use Sub::Quote qw(quote_sub);
+use Moose;
+#use Moose::Util::TypeConstraints qw(enum);
 
 has name => (
   is => 'rw',
@@ -17,17 +16,28 @@ has uuid => (
 has domid => (
   is => 'ro',
   required => 1,
-  isa => quote_sub q{ die "$_[0] is not a valid DOM id" unless Scalar::Util::looks_like_number($_[0]) },
+  isa => 'Int',
+);
+
+has resident_on => (
+  is => 'ro',
+);
+
+has power_state => (
+  is => 'ro',
+#  isa => enum( qw(Halted Paused Running Suspended Unknown) ),
 );
 
 has other_config => (
   is => 'ro',
-  isa => quote_sub q{ die "$_[0] is not a HASH ref" unless ref($_[0]) eq 'HASH' },
+  isa => 'HashRef',
 );
 
 has allowed_operations => (
   is => 'ro',
-  isa => quote_sub q{ die "$_[0] is not an ARRAY ref" unless ref($_[0]) eq 'ARRAY' },
+  isa => 'ArrayRef',
 );
 
+__PACKAGE__->meta->make_immutable;
+no Moose;
 1;

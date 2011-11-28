@@ -1,12 +1,11 @@
 package XenServer::API::Sugar;
-use Moo::Role;
-use Sub::Quote qw(quote_sub);
+use Moose::Role;
 
 has guests => (
   is => 'ro',
   lazy => 1,
   builder => '_build_guests',
-  isa => quote_sub q{ die "$_[0] is not an arrayref" unless ref($_[0]) eq 'ARRAY' },
+  isa => 'ArrayRef',
 );
 
 sub _build_guests {
@@ -25,4 +24,5 @@ sub _build_guests {
   return \@return;
 }
 
+no Moose::Role;
 1;
