@@ -1,6 +1,6 @@
 package XenServer::API::Guest;
 use Moose;
-#use Moose::Util::TypeConstraints qw(enum);
+use Moose::Util::TypeConstraints qw(enum);
 
 has name => (
   is => 'rw',
@@ -25,7 +25,7 @@ has resident_on => (
 
 has power_state => (
   is => 'ro',
-#  isa => enum( qw(Halted Paused Running Suspended Unknown) ),
+  isa => enum( [ qw(Halted Paused Running Suspended Unknown) ] ),
 );
 
 has other_config => (
