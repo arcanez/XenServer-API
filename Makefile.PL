@@ -11,8 +11,9 @@ WriteMakefile(
   ABSTRACT_FROM => 'lib/XenServer/API.pm',
   MIN_PERL_VERSION => '5.008001',
   PREREQ_PM => {
-    'XML::RPC' => '0',
-    'Moose' => '0.93',
+    'XML::RPC' => 0,
+    'Moo' => 0,
+    'MooX::Types::MooseLike' => 0,
   },
   'BUILD_REQUIRES' => {
     'Test::More' => '0.88',

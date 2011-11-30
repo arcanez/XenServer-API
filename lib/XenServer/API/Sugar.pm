@@ -1,14 +1,15 @@
 package XenServer::API::Sugar;
-use Moose::Role;
+use Moo::Role;
+use MooX::Types::MooseLike qw(ArrayRef);
 
-has guests => (
+has guest_vms => (
   is => 'ro',
   lazy => 1,
-  builder => '_build_guests',
-  isa => 'ArrayRef',
+  builder => '_build_guest_vms',
+  isa => ArrayRef,
 );
 
-sub _build_guests {
+sub _build_guest_vms {
   my $self = shift;
   my @return;
   my $results = $self->get('VM.get_all_records');
@@ -24,5 +25,5 @@ sub _build_guests {
   return \@return;
 }
 
-no Moose::Role;
+no Moo::Role;
 1;

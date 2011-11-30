@@ -1,9 +1,13 @@
 package XenServer::API;
-use Moose;
+use Moo;
 use XML::RPC;
+use Sub::Quote qw(quote_sub);
 use XenServer::API::Guest;
 
 with 'XenServer::API::Sugar';
+
+our $VERSION = '0.001';
+$VERSION = eval $VERSION;
 
 has host => (
   is => 'rw',
@@ -31,7 +35,7 @@ has _xmlrpc => (
   lazy => 1,
   builder => '_build_xmlrpc',
   handles => [ qw(call) ],
-  isa => 'XML::RPC',
+  isa => quote_sub q{ die "$_[0] is not an XML::RPC object" unless $_[0]->isa('XML::RPC') },
 );
 
 has _session => (
@@ -57,6 +61,5 @@ sub get {
   $self->call( shift, $self->_session, @_ );
 }
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
+no Moo;
 1;
