@@ -1,7 +1,7 @@
 package XenServer::API;
-use Moo;
+use namespace::autoclean;
+use Moose;
 use XML::RPC;
-use Sub::Quote qw(quote_sub);
 use XenServer::API::VM;
 
 with 'XenServer::API::Sugar';
@@ -35,7 +35,7 @@ has _xmlrpc => (
   lazy => 1,
   builder => '_build_xmlrpc',
   handles => [ qw(call) ],
-  isa => quote_sub q{ die "$_[0] is not an XML::RPC object" unless $_[0]->isa('XML::RPC') },
+  isa => 'XML::RPC',
 );
 
 has _session => (
@@ -61,5 +61,5 @@ sub get {
   $self->call( shift, $self->_session, @_ );
 }
 
-no Moo;
+__PACKAGE__->meta->make_immutable;
 1;

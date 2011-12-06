@@ -1,7 +1,34 @@
 package XenServer::API::VM;
-use Moo;
-use MooX::Types::MooseLike qw(Str Int HashRef ArrayRef);
-use Sub::Quote qw(quote_sub);
+use namespace::autoclean;
+use Moose;
+use Moose::Util::TypeConstraints qw(enum);
+use MooseX::Types::Moose qw(Str Int HashRef ArrayRef Maybe);
+use MooseX::Types::UUID qw(UUID);
+
+has actions_after_crash => (
+  is => 'rw',
+  isa => enum( [ qw(destroy coredump_and_destroy restart coredump_and_restart preserve rename_restart)] ),
+);
+
+has actions_after_reboot => (
+  is => 'rw',
+  isa => enum( [ qw(destroy restart) ] ),
+);
+
+has actions_after_shutdown => (
+  is => 'rw',
+  isa => enum( [ qw(destroy restart) ] ),
+);
+
+has affinity => (
+  is => 'rw',
+  isa => Maybe[Str],
+);
+
+has allowed_operations => (
+  is => 'ro',
+  isa => ArrayRef,
+);
 
 has name => (
   is => 'rw',
@@ -12,7 +39,8 @@ has name => (
 has uuid => (
   is => 'ro',
   required => 1,
-  isa => quote_sub q( die "$_[0] is not a valid UUID" unless $_[0] =~ /^[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}$/i ),
+  isa => UUID,
+  coerce => 1,
 );
 
 has domid => (
@@ -27,7 +55,7 @@ has resident_on => (
 
 has power_state => (
   is => 'ro',
-  isa => quote_sub q( die "$_[0] is not a valid power state" unless $_[0] =~ /^(Halted|Paused|Running|Suspended|Unknown)$/i ),
+  isa => enum( [ qw(Halted Paused Running Suspended Unknown) ] ),
 );
 
 has other_config => (
@@ -35,10 +63,5 @@ has other_config => (
   isa => HashRef,
 );
 
-has allowed_operations => (
-  is => 'ro',
-  isa => ArrayRef,
-);
-
-no Moo;
+__PACKAGE__->meta->make_immutable;
 1;

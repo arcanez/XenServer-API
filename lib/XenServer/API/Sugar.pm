@@ -1,6 +1,7 @@
 package XenServer::API::Sugar;
-use Moo::Role;
-use MooX::Types::MooseLike qw(ArrayRef);
+use namespace::autoclean;
+use Moose::Role;
+use MooseX::Types::Moose qw(ArrayRef);
 
 has guest_vms => (
   is => 'ro',
@@ -25,5 +26,4 @@ sub _build_guest_vms {
   return \@return;
 }
 
-no Moo::Role;
 1;
