@@ -20,7 +20,7 @@ sub _build_guest_vms {
     next if $vm->{is_a_snapshot};
     next if $vm->{is_control_domain};
     delete $vm->{last_booted_record};
-    push @return, XenServer::API::Guest->new($vm);
+    push @return, XenServer::API::VM->new($vm);
   }
   return \@return;
 }

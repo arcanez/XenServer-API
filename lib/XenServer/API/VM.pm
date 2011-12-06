@@ -1,4 +1,4 @@
-package XenServer::API::Guest;
+package XenServer::API::VM;
 use Moo;
 use MooX::Types::MooseLike qw(Str Int HashRef ArrayRef);
 use Sub::Quote qw(quote_sub);
@@ -27,7 +27,7 @@ has resident_on => (
 
 has power_state => (
   is => 'ro',
-#  isa => enum( [ qw(Halted Paused Running Suspended Unknown) ] ),
+  isa => quote_sub q( die "$_[0] is not a valid power state" unless $_[0] =~ /^(Halted|Paused|Running|Suspended|Unknown)$/i ),
 );
 
 has other_config => (

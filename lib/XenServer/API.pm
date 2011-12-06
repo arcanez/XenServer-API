@@ -2,7 +2,7 @@ package XenServer::API;
 use Moo;
 use XML::RPC;
 use Sub::Quote qw(quote_sub);
-use XenServer::API::Guest;
+use XenServer::API::VM;
 
 with 'XenServer::API::Sugar';
 
