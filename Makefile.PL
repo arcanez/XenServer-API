@@ -16,6 +16,7 @@ WriteMakefile(
     'Moose::Util::TypeConstraints' => 0,
     'MooseX::Types::Moose' => 0,
     'MooseX::Types::UUID' => 0,
+    'MooseX::UndefTolerant' => 0,
     'namespace::autoclean' => 0,
   },
   'BUILD_REQUIRES' => {
